@@ -1,0 +1,3 @@
+recursive-include pretix_public_registrations/static *
+recursive-include pretix_public_registrations/templates *
+recursive-include pretix_public_registrations/locale *
