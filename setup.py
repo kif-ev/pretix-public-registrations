@@ -33,7 +33,7 @@ setup(
     author_email='felix@kif.rocks',
     license='Apache Software License',
 
-    install_requires=[],
+    install_requires=['django-gravatar2'],
     packages=find_packages(exclude=['tests', 'tests.*']),
     include_package_data=True,
     cmdclass=cmdclass,

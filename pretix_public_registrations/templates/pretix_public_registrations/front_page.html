@@ -1,0 +1,25 @@
+{% load i18n %}
+<section class="front-page">
+    <h3>{% trans "Public registrations" %}</h3>
+    <div class="table-responsive product-row">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                {% for h in headers %}
+                <th scope="col">{% trans h %}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for pr in public_registrations %}
+            <tr>
+                <td><img class="gravatar" src="{{ pr.gr_url }}" /></td>
+                {% for f in pr.fields %}
+                <td>{{ f }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</section>
