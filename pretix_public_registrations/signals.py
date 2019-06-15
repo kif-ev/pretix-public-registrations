@@ -5,7 +5,7 @@ from i18nfield.strings import LazyI18nString
 from pretix.presale.signals import question_form_fields
 
 
-@receiver(question_form_fields, dispatch_uid="pretix_public_registration_question")
+@receiver(question_form_fields, dispatch_uid="public_registration_question")
 def add_public_registration_question(sender, **kwargs):
     return {'public_registration': forms.CharField(
         label=_('Public registration'),
