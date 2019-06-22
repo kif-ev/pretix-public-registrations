@@ -55,6 +55,7 @@ def add_public_registrations_table(sender, **kwargs):
 
 
 @receiver(signal=process_response, dispatch_uid="public_registragions_csp_headers")
-def add_public_registrations_csp_headers(sender, response=None, **kwargs):
-    response['Content-Security-Policy'] = "img-src https://secure.gravatar.com"
+def add_public_registrations_csp_headers(sender, request=None, response=None, **kwargs):
+    if "event.index" in resolve(request.path_info).url_name:
+        response['Content-Security-Policy'] = "img-src https://secure.gravatar.com"
     return response
