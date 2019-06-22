@@ -51,6 +51,7 @@ def add_public_registrations_table(sender, **kwargs):
             'headers': headers,
             'public_registrations': public_registrations
         })
+        sender.cache.set('public_registrations_table_' + get_language(), cached)
     return cached
 
 
