@@ -2,10 +2,21 @@ from django import forms
 from django.dispatch import receiver
 from django.template.loader import get_template
 from django.utils.translation import ugettext_lazy as _, get_language
+from django.urls import resolve
 from django_gravatar.helpers import get_gravatar_url
 from i18nfield.strings import LazyI18nString
-from pretix.presale.signals import question_form_fields, front_page_bottom, process_response
+from pretix.presale.signals import question_form_fields, front_page_bottom, process_response, html_head
 from pretix.base.models import OrderPosition
+
+
+@receiver(html_head, dispatch_uid="public_registrations_html_head")
+def add_public_registrations_html_head(sender, request=None, **kwargs):
+    url = resolve(request.path_info)
+    if "event.index" in url.url_name:
+        template = get_template("pretix_public_registrations/head.html")
+        return template.render()
+    else:
+        return ""
 
 
 @receiver(question_form_fields, dispatch_uid="public_registration_question")
