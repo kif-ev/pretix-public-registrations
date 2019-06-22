@@ -11,12 +11,16 @@ from pretix.base.models import OrderPosition
 
 @receiver(html_head, dispatch_uid="public_registrations_html_head")
 def add_public_registrations_html_head(sender, request=None, **kwargs):
-    url = resolve(request.path_info)
-    if "event.index" in url.url_name:
-        template = get_template("pretix_public_registrations/head.html")
-        return template.render()
-    else:
-        return ""
+    cached = sender.cache.get('public_registrations_html_head')
+    if cached is None:
+        url = resolve(request.path_info)
+        if "event.index" in url.url_name:
+            template = get_template("pretix_public_registrations/head.html")
+            cached = template.render()
+        else:
+            cached = ""
+        sender.cache.set('public_registrations_html_head', cached)
+    return cached
 
 
 @receiver(question_form_fields, dispatch_uid="public_registration_question")
