@@ -29,8 +29,8 @@ setup(
     description='This plugin will give the option to attendees of an event to mark their registration as public. Public registrations will be shown along their answers to questions marked as public by the organizers on a world-readable page.',
     long_description=long_description,
     url='git@gitlab.fachschaften.org:kifev/pretix-public-registrations.git',
-    author='Felix Schäfer',
-    author_email='felix@kif.rocks',
+    author='Felix Schäfer, Dominik Weitz',
+    author_email='admin@kif.rocks',
     license='Apache Software License',
 
     install_requires=['django-gravatar2'],

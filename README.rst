@@ -24,7 +24,7 @@ License
 -------
 
 
-Copyright 2019 Felix Schäfer
+Copyright 2019 Felix Schäfer, Dominik Weitz
 
 Released under the terms of the Apache License 2.0
 

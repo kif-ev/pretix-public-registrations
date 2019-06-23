@@ -11,7 +11,7 @@ class PluginApp(PluginConfig):
 
     class PretixPluginMeta:
         name = ugettext_lazy('Pretix public registrations')
-        author = 'Felix Schäfer'
+        author = 'Felix Schäfer, Dominik Weitz'
         description = ugettext_lazy('This plugin will give the option to attendees of an event to mark their registration as public. Public registrations will be shown along their answers to questions marked as public by the organizers on a world-readable page.')
         visible = True
         version = '1.0.0'
