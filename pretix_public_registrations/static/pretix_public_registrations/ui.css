@@ -2,3 +2,12 @@
 .table > tbody > tr > td:first-child {
   width: 41px;
 }
+
+table.sortable thead span#sorttable_sortfwdind,
+table.sortable thead span#sorttable_sortrevind {
+  display: none;
+}
+
+table.sortable thead th {
+  white-space: nowrap;
+}

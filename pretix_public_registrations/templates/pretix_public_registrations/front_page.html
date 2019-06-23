@@ -2,11 +2,12 @@
 <section class="front-page">
     <h3>{% trans "Public registrations" %}</h3>
     <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-striped sortable">
         <thead>
             <tr>
+                <th scope="col" class="sorttable_nosort"></th>
                 {% for h in headers %}
-                <th scope="col">{% trans h %}</th>
+                <th scope="col">{% trans h %} <i class="fa fa-caret-up"></i><i class="fa fa-caret-down"></i></th>
                 {% endfor %}
             </tr>
         </thead>
