@@ -39,7 +39,7 @@ def add_public_registrations_table(sender, **kwargs):
     if cached is None:
         cached = ""
         headers = ["", "Name"]
-        order_positions = OrderPosition.all.filter(order__event=sender)
+        order_positions = OrderPosition.objects.filter(order__event=sender)
         public_order_positions = [
             op for op in order_positions
             if op.meta_info_data.get('question_form_data', {}).get('public_registration') == "True"
