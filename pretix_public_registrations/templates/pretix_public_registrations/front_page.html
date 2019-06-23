@@ -13,7 +13,7 @@
         <tbody>
         {% for pr in public_registrations %}
             <tr>
-                <td><img class="gravatar" src="{{ pr.gr_url }}" /></td>
+                <th scope="row"><img class="gravatar" src="{{ pr.gr_url }}" /></th>
                 {% for f in pr.fields %}
                 <td>{{ f }}</td>
                 {% endfor %}
