@@ -2,10 +2,11 @@ from django import forms
 from django.dispatch import receiver
 from django.template.loader import get_template
 from django.utils.translation import ugettext_lazy as _, get_language
-from django.urls import resolve
+from django.urls import resolve, reverse
 from django_gravatar.helpers import get_gravatar_url
 from i18nfield.strings import LazyI18nString
 from pretix.presale.signals import question_form_fields, front_page_bottom, process_response, html_head
+from pretix.control.signals import nav_event_settings
 from pretix.base.models import OrderPosition
 
 
@@ -64,3 +65,16 @@ def add_public_registrations_csp_headers(sender, request=None, response=None, **
     if "event.index" in resolve(request.path_info).url_name:
         response['Content-Security-Policy'] = "img-src https://secure.gravatar.com"
     return response
+
+
+@receiver(signal=nav_event_settings, dispatch_uid="public_registrations_nav_settings")
+def navbar_settings(sender, request=None, **kwargs):
+    url = resolve(request.path_info)
+    return [{
+        'label': _('Public registrations'),
+        'url': reverse('plugins:pretix_public_registrations:settings', kwargs={
+            'event': request.event.slug,
+            'organizer': request.organizer.slug,
+        }),
+        'active': url.namespace == 'plugins:pretix_public_registrations' and url.url_name == 'settings',
+    }]
