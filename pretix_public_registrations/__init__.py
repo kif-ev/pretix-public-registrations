@@ -1,4 +1,4 @@
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import ugettext_lazy as _
 try:
     from pretix.base.plugins import PluginConfig
 except ImportError:
@@ -10,9 +10,9 @@ class PluginApp(PluginConfig):
     verbose_name = 'Pretix public registrations'
 
     class PretixPluginMeta:
-        name = ugettext_lazy('Pretix public registrations')
+        name = _('Pretix public registrations')
         author = 'Felix Schäfer, Dominik Weitz'
-        description = ugettext_lazy('This plugin will give the option to attendees of an event to mark their registration as public. Public registrations will be shown along their answers to questions marked as public by the organizers on a world-readable page.')
+        description = _('This plugin will give the option to attendees of an event to mark their registration as public. Public registrations will be shown along their answers to questions marked as public by the organizers on a world-readable page.')
         visible = True
         version = '1.0.0'
         compatibility = "pretix>=2.7.0"
