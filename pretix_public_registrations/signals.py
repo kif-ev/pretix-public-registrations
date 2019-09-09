@@ -59,7 +59,7 @@ def add_public_registrations_table(sender, **kwargs):
             {
                 'gr_url': get_gravatar_url(pop.attendee_email, size=24, default="wavatar"),
                 'fields': [pop.attendee_name_cached]
-            } for pop in public_order_positions
+            } for pop in public_order_positions if pop.attendee_email and pop.attendee_name_cached
         ]
         template = get_template('pretix_public_registrations/front_page.html')
         cached = template.render({
