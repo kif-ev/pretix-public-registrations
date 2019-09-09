@@ -30,13 +30,17 @@ def add_public_registrations_html_head(sender, request=None, **kwargs):
 
 
 @receiver(question_form_fields, dispatch_uid="public_registration_question")
-def add_public_registration_question(sender, **kwargs):
-    return {'public_registration': forms.CharField(
-        label=_('Public registration'),
-        required=False,
-        help_text=sender.settings.get('public_registration_field_help_text', as_type=LazyI18nString),
-        widget=forms.CheckboxInput(),
-    )}
+def add_public_registration_question(sender, position, **kwargs):
+    # TODO: This should also filter by items with an attendee
+    if str(position.item.pk) in sender.settings.get('public_registrations_items'):
+        return {'public_registration': forms.CharField(
+            label=_('Public registration'),
+            required=False,
+            help_text=sender.settings.get('public_registrations_field_help_text', as_type=LazyI18nString),
+            widget=forms.CheckboxInput(),
+        )}
+    else:
+        return {}
 
 
 @receiver(signal=front_page_bottom, dispatch_uid="public_registrations_table")
