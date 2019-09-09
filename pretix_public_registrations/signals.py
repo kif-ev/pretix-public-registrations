@@ -53,6 +53,7 @@ def add_public_registrations_table(sender, **kwargs):
         public_order_positions = [
             op for op in order_positions
             if op.meta_info_data.get('question_form_data', {}).get('public_registration') == "True"
+            and str(op.item.pk) in sender.settings.get('public_registrations_items')
         ]
         public_registrations = [
             {
