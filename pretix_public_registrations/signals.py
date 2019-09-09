@@ -48,17 +48,33 @@ def add_public_registrations_table(sender, **kwargs):
     cached = sender.cache.get('public_registrations_table_' + get_language())
     if cached is None:
         cached = ""
-        headers = ["Name"]
+        public_questions = [
+            q for q in sender.questions.all()
+            if str(q.pk) in sender.settings.get('public_registrations_questions')
+        ]
+        headers = [_("Name")] + [
+            q.question for q in public_questions
+        ]
         order_positions = OrderPosition.objects.filter(order__event=sender)
         public_order_positions = [
             op for op in order_positions
             if op.meta_info_data.get('question_form_data', {}).get('public_registration') == "True"
             and str(op.item.pk) in sender.settings.get('public_registrations_items')
         ]
+        public_answers = {
+            pop: {
+                pq: pop.answers.filter(question=pq).first()
+            }
+            for pq in public_questions
+            for pop in public_order_positions
+        }
         public_registrations = [
             {
                 'gr_url': get_gravatar_url(pop.attendee_email, size=24, default="wavatar"),
-                'fields': [pop.attendee_name_cached]
+                'fields': [pop.attendee_name_cached] + [
+                    public_answers[pop][pq].answer if public_answers[pop][pq] else ''
+                    for pq in public_questions
+                ]
             } for pop in public_order_positions if pop.attendee_email and pop.attendee_name_cached
         ]
         template = get_template('pretix_public_registrations/front_page.html')
