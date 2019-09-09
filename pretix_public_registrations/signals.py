@@ -8,6 +8,11 @@ from i18nfield.strings import LazyI18nString
 from pretix.presale.signals import question_form_fields, front_page_bottom, process_response, html_head
 from pretix.control.signals import nav_event_settings
 from pretix.base.models import OrderPosition
+from pretix.base.settings import settings_hierarkey
+
+
+settings_hierarkey.add_default('public_registrations_items', None, list)
+settings_hierarkey.add_default('public_registrations_questions', None, list)
 
 
 @receiver(html_head, dispatch_uid="public_registrations_html_head")
