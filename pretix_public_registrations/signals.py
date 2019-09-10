@@ -7,7 +7,7 @@ from django_gravatar.helpers import get_gravatar_url
 from i18nfield.strings import LazyI18nString
 from pretix.presale.signals import question_form_fields, front_page_bottom, process_response, html_head
 from pretix.control.signals import nav_event_settings
-from pretix.base.models import OrderPosition
+from pretix.base.models import OrderPosition, QuestionAnswer
 from pretix.base.settings import settings_hierarkey
 
 
@@ -48,31 +48,27 @@ def add_public_registrations_table(sender, **kwargs):
     cached = sender.cache.get('public_registrations_table_' + get_language())
     if cached is None:
         cached = ""
-        public_questions = [
-            q for q in sender.questions.all()
-            if str(q.pk) in sender.settings.get('public_registrations_questions')
-        ]
+        public_questions = sender.questions.filter(pk__in=sender.settings.get('public_registrations_questions'))
         headers = [_("Name")] + [
             q.question for q in public_questions
         ]
-        order_positions = OrderPosition.objects.filter(order__event=sender)
+        order_positions = OrderPosition.objects.filter(order__event=sender, item__pk__in=sender.settings.get('public_registrations_items'))
         public_order_positions = [
             op for op in order_positions
             if op.meta_info_data.get('question_form_data', {}).get('public_registration') == "True"
-            and str(op.item.pk) in sender.settings.get('public_registrations_items')
         ]
+        answers = QuestionAnswer.objects.filter(orderposition__in=public_order_positions, question__in=public_questions)
         public_answers = {
-            pop: {
-                pq: pop.answers.filter(question=pq).first()
+            a.orderposition_id: {
+                a.question_id: a
             }
-            for pq in public_questions
-            for pop in public_order_positions
+            for a in answers
         }
         public_registrations = [
             {
                 'gr_url': get_gravatar_url(pop.attendee_email, size=24, default="wavatar"),
                 'fields': [pop.attendee_name_cached] + [
-                    public_answers[pop][pq].answer if public_answers[pop][pq] else ''
+                    public_answers[pop.pk][pq.pk].answer if public_answers.get(pop.pk, None) and public_answers[pop.pk].get(pq.pk, None) else ''
                     for pq in public_questions
                 ]
             } for pop in public_order_positions if pop.attendee_email and pop.attendee_name_cached
