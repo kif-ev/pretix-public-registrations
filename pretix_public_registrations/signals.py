@@ -13,6 +13,8 @@ from pretix.base.settings import settings_hierarkey
 
 settings_hierarkey.add_default('public_registrations_items', None, list)
 settings_hierarkey.add_default('public_registrations_questions', None, list)
+settings_hierarkey.add_default('public_registrations_show_attendee_name', False, bool)
+settings_hierarkey.add_default('public_registrations_show_item_name', False, bool)
 
 
 @receiver(html_head, dispatch_uid="public_registrations_html_head")
@@ -49,7 +51,11 @@ def add_public_registrations_table(sender, **kwargs):
     if cached is None:
         cached = ""
         public_questions = sender.questions.filter(pk__in=sender.settings.get('public_registrations_questions'))
-        headers = [_("Name")] + [
+        headers = (
+            [_("Product")] if sender.settings.get('public_registrations_show_item_name') else []
+        ) + (
+            [_("Name")] if sender.settings.get('public_registrations_show_attendee_name') else []
+        ) + [
             q.question for q in public_questions
         ]
         order_positions = OrderPosition.objects.filter(order__event=sender, item__pk__in=sender.settings.get('public_registrations_items'))
@@ -67,7 +73,11 @@ def add_public_registrations_table(sender, **kwargs):
         public_registrations = [
             {
                 'gr_url': get_gravatar_url(pop.attendee_email, size=24, default="wavatar"),
-                'fields': [pop.attendee_name_cached] + [
+                'fields': (
+                    [pop.item.name] if sender.settings.get('public_registrations_show_item_name') else []
+                ) + (
+                    [pop.attendee_name_cached] if sender.settings.get('public_registrations_show_attendee_name') else []
+                ) + [
                     public_answers[pop.pk][pq.pk].answer if public_answers.get(pop.pk, None) and public_answers[pop.pk].get(pq.pk, None) else ''
                     for pq in public_questions
                 ]

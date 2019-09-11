@@ -20,6 +20,14 @@ class PublicRegistrationsForm(SettingsForm):
         required=True,
         choices=[],
     )
+    public_registrations_show_attendee_name = forms.BooleanField(
+        label=_('Show attendee name'),
+        required=False,
+    )
+    public_registrations_show_item_name = forms.BooleanField(
+        label=_('Show product name'),
+        required=False,
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
