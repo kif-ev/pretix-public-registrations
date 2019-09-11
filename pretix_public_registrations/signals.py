@@ -71,7 +71,7 @@ def add_public_registrations_table(sender, **kwargs):
         }
         public_registrations = [
             {
-                'gr_url': get_gravatar_url(pop.attendee_email, size=24, default="wavatar"),
+                'gr_url': get_gravatar_url(pop.attendee_email or pop.order.code, size=24, default="wavatar"),
                 'fields': (
                     [pop.item.name] if sender.settings.get('public_registrations_show_item_name') else []
                 ) + (
@@ -80,7 +80,7 @@ def add_public_registrations_table(sender, **kwargs):
                     public_answers[pop.pk][pq.pk].answer if public_answers.get(pop.pk, None) and public_answers[pop.pk].get(pq.pk, None) else ''
                     for pq in public_questions
                 ]
-            } for pop in public_order_positions if pop.attendee_email and pop.attendee_name_cached
+            } for pop in public_order_positions
         ]
         template = get_template('pretix_public_registrations/front_page.html')
         cached = template.render({
