@@ -35,11 +35,10 @@ def add_public_registrations_html_head(sender, request=None, **kwargs):
 def add_public_registration_question(sender, position, **kwargs):
     # TODO: This should also filter by items with an attendee
     if str(position.item.pk) in sender.settings.get('public_registrations_items'):
-        return {'public_registration': forms.CharField(
+        return {'public_registrations_public_registration': forms.BooleanField(
             label=_('Public registration'),
             required=False,
             help_text=sender.settings.get('public_registrations_field_help_text', as_type=LazyI18nString),
-            widget=forms.CheckboxInput(),
         )}
     else:
         return {}
@@ -61,7 +60,7 @@ def add_public_registrations_table(sender, **kwargs):
         order_positions = OrderPosition.objects.filter(order__event=sender, item__pk__in=sender.settings.get('public_registrations_items'))
         public_order_positions = [
             op for op in order_positions
-            if op.meta_info_data.get('question_form_data', {}).get('public_registration') == "True"
+            if op.meta_info_data.get('question_form_data', {}).get('public_registrations_public_registration')
         ]
         answers = QuestionAnswer.objects.filter(orderposition__in=public_order_positions, question__in=public_questions)
         public_answers = {
