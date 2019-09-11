@@ -46,49 +46,44 @@ def add_public_registration_question(sender, position, **kwargs):
 
 @receiver(signal=front_page_bottom, dispatch_uid="public_registrations_table")
 def add_public_registrations_table(sender, **kwargs):
-    cached = sender.cache.get('public_registrations_table_' + get_language())
-    if cached is None:
-        cached = ""
-        public_questions = sender.questions.filter(pk__in=sender.settings.get('public_registrations_questions'))
-        headers = (
-            [_("Product")] if sender.settings.get('public_registrations_show_item_name') else []
-        ) + (
-            [_("Name")] if sender.settings.get('public_registrations_show_attendee_name') else []
-        ) + [
-            q.question for q in public_questions
-        ]
-        order_positions = OrderPosition.objects.filter(order__event=sender, item__pk__in=sender.settings.get('public_registrations_items'))
-        public_order_positions = [
-            op for op in order_positions
-            if op.meta_info_data.get('question_form_data', {}).get('public_registrations_public_registration')
-        ]
-        answers = QuestionAnswer.objects.filter(orderposition__in=public_order_positions, question__in=public_questions)
-        public_answers = {
-            a.orderposition_id: {
-                a.question_id: a
-            }
-            for a in answers
+    public_questions = sender.questions.filter(pk__in=sender.settings.get('public_registrations_questions'))
+    headers = (
+        [_("Product")] if sender.settings.get('public_registrations_show_item_name') else []
+    ) + (
+        [_("Name")] if sender.settings.get('public_registrations_show_attendee_name') else []
+    ) + [
+        q.question for q in public_questions
+    ]
+    order_positions = OrderPosition.objects.filter(order__event=sender, item__pk__in=sender.settings.get('public_registrations_items'))
+    public_order_positions = [
+        op for op in order_positions
+        if op.meta_info_data.get('question_form_data', {}).get('public_registrations_public_registration')
+    ]
+    answers = QuestionAnswer.objects.filter(orderposition__in=public_order_positions, question__in=public_questions)
+    public_answers = {
+        a.orderposition_id: {
+            a.question_id: a
         }
-        public_registrations = [
-            {
-                'gr_url': get_gravatar_url(pop.attendee_email or pop.order.code, size=24, default="wavatar"),
-                'fields': (
-                    [pop.item.name] if sender.settings.get('public_registrations_show_item_name') else []
-                ) + (
-                    [pop.attendee_name_cached] if sender.settings.get('public_registrations_show_attendee_name') else []
-                ) + [
-                    public_answers[pop.pk][pq.pk].answer if public_answers.get(pop.pk, None) and public_answers[pop.pk].get(pq.pk, None) else ''
-                    for pq in public_questions
-                ]
-            } for pop in public_order_positions
-        ]
-        template = get_template('pretix_public_registrations/front_page.html')
-        cached = template.render({
-            'headers': headers,
-            'public_registrations': public_registrations
-        })
-        sender.cache.set('public_registrations_table_' + get_language(), cached)
-    return cached
+        for a in answers
+    }
+    public_registrations = [
+        {
+            'gr_url': get_gravatar_url(pop.attendee_email or pop.order.code, size=24, default="wavatar"),
+            'fields': (
+                [pop.item.name] if sender.settings.get('public_registrations_show_item_name') else []
+            ) + (
+                [pop.attendee_name_cached] if sender.settings.get('public_registrations_show_attendee_name') else []
+            ) + [
+                public_answers[pop.pk][pq.pk].answer if public_answers.get(pop.pk, None) and public_answers[pop.pk].get(pq.pk, None) else ''
+                for pq in public_questions
+            ]
+        } for pop in public_order_positions
+    ]
+    template = get_template('pretix_public_registrations/front_page.html')
+    return template.render({
+        'headers': headers,
+        'public_registrations': public_registrations
+    })
 
 
 @receiver(signal=process_response, dispatch_uid="public_registragions_csp_headers")
