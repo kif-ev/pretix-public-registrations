@@ -33,7 +33,6 @@ def add_public_registrations_html_head(sender, request=None, **kwargs):
 
 @receiver(question_form_fields, dispatch_uid="public_registration_question")
 def add_public_registration_question(sender, position, **kwargs):
-    # TODO: This should also filter by items with an attendee
     if str(position.item.pk) in sender.settings.get('public_registrations_items'):
         return {'public_registrations_public_registration': forms.BooleanField(
             label=_('Public registration'),
