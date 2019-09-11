@@ -60,9 +60,7 @@ def add_public_registrations_table(sender, **kwargs):
     ]
     answers = QuestionAnswer.objects.filter(orderposition__in=public_order_positions, question__in=public_questions)
     public_answers = {
-        a.orderposition_id: {
-            a.question_id: a
-        }
+        (a.orderposition_id, a.question_id): a
         for a in answers
     }
     public_registrations = [
@@ -73,7 +71,7 @@ def add_public_registrations_table(sender, **kwargs):
             ) + (
                 [pop.attendee_name_cached] if sender.settings.get('public_registrations_show_attendee_name') else []
             ) + [
-                public_answers[pop.pk][pq.pk].answer if public_answers.get(pop.pk, None) and public_answers[pop.pk].get(pq.pk, None) else ''
+                public_answers[(pop.pk, pq.pk)].answer if public_answers.get((pop.pk, pq.pk)) else ''
                 for pq in public_questions
             ]
         } for pop in public_order_positions
