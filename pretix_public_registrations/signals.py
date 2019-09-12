@@ -55,6 +55,12 @@ def add_public_registration_question(sender, position, **kwargs):
 
 @receiver(signal=front_page_bottom, dispatch_uid="public_registrations_table")
 def add_public_registrations_table(sender, **kwargs):
+    if not sender.settings.get('public_registrations_items') and not (
+        sender.settings.get('public_registrations_questions')
+        and sender.settings.get('public_registrations_show_item_name')
+        and sender.settings.get('public_registrations_show_attendee_name')
+    ):
+        return ""
     public_questions = sender.questions.filter(pk__in=sender.settings.get('public_registrations_questions'))
     headers = (
         [_("Product")] if sender.settings.get('public_registrations_show_item_name') else []
