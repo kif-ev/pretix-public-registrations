@@ -25,7 +25,7 @@ cmdclass = {
 
 setup(
     name='pretix-public-registrations',
-    version='1.2.1',
+    version='1.2.2',
     description='This plugin will give the option to attendees of an event to mark their registration as public. Public registrations will be shown along their answers to questions marked as public by the organizers on a world-readable page.',
     long_description=long_description,
     url='git@gitlab.fachschaften.org:kifev/pretix-public-registrations.git',
