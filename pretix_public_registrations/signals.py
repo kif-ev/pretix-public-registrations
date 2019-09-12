@@ -47,8 +47,7 @@ def add_public_registration_question(sender, position, **kwargs):
             required=False,
             help_text=_(
                 'The answers to the following questions will be publicly shown: %(qlist)s'
-                % {'qlist': ", ".join(str(h) for h in headers)}
-            ),
+            ) % {'qlist': ", ".join(str(h) for h in headers)},
         )}
     else:
         return {}
