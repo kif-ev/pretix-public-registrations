@@ -34,10 +34,21 @@ def add_public_registrations_html_head(sender, request=None, **kwargs):
 @receiver(question_form_fields, dispatch_uid="public_registration_question")
 def add_public_registration_question(sender, position, **kwargs):
     if str(position.item.pk) in sender.settings.get('public_registrations_items'):
+        public_questions = sender.questions.filter(pk__in=sender.settings.get('public_registrations_questions'))
+        headers = (
+            [_("Product")] if sender.settings.get('public_registrations_show_item_name') else []
+        ) + (
+            [_("Name")] if sender.settings.get('public_registrations_show_attendee_name') else []
+        ) + [
+            q.question for q in public_questions
+        ]
         return {'public_registrations_public_registration': forms.BooleanField(
             label=_('Public registration'),
             required=False,
-            help_text=sender.settings.get('public_registrations_field_help_text', as_type=LazyI18nString),
+            help_text=_(
+                'The answers to the following questions will be publicly shown: %(qlist)s'
+                % {'qlist': ", ".join(str(h) for h in headers)}
+            ),
         )}
     else:
         return {}

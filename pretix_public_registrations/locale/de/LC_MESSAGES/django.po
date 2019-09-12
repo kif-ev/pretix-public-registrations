@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-11 22:48+0200\n"
+"POT-Creation-Date: 2019-09-12 10:44+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Felix Schäfer\n"
 "Language-Team: \n"
@@ -15,7 +15,6 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: __init__.py:13
-#| msgid "Public registration"
 msgid "Pretix public registrations"
 msgstr ""
 
@@ -43,10 +42,16 @@ msgstr "Teilnehmername anzeigen"
 msgid "Show product name"
 msgstr "Produktname anzeigen"
 
-#: signals.py:38
+#: signals.py:46
 msgid "Public registration"
 msgstr "Öffentliche Anmeldung"
 
-#: signals.py:97
+#: signals.py:49
+#, python-format
+msgid ""
+"The answers to the following questions will be publicly shown: %(qlist)s"
+msgstr "Antworten auf folgende Fragen werden öffentlich angezeigt: %(qlist)s"
+
+#: signals.py:108
 msgid "Public registrations"
 msgstr "Öffentliche Anmeldungen"
