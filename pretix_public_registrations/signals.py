@@ -11,8 +11,8 @@ from pretix.base.models import OrderPosition, QuestionAnswer
 from pretix.base.settings import settings_hierarkey
 
 
-settings_hierarkey.add_default('public_registrations_items', None, list)
-settings_hierarkey.add_default('public_registrations_questions', None, list)
+settings_hierarkey.add_default('public_registrations_items', [], list)
+settings_hierarkey.add_default('public_registrations_questions', [], list)
 settings_hierarkey.add_default('public_registrations_show_attendee_name', False, bool)
 settings_hierarkey.add_default('public_registrations_show_item_name', False, bool)
 
