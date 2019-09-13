@@ -1,6 +1,13 @@
 {% load i18n %}
 <section class="front-page">
     <h3>{% trans "Public registrations" %}</h3>
+    {% if not public_registrations %}
+    <div>
+        <div class="col-md-12">
+            <p>{% trans "No public registrations yet." %}</p>
+        </div>
+    </div>
+    {% else %}
     <div class="table-responsive">
     <table class="table table-striped sortable">
         <thead>
@@ -23,4 +30,5 @@
         </tbody>
     </table>
     </div>
+    {% endif %}
 </section>
