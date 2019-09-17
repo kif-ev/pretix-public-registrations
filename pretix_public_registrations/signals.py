@@ -4,7 +4,9 @@ from django.template.loader import get_template
 from django.utils.translation import ugettext_lazy as _
 from django.urls import resolve, reverse
 from django_gravatar.helpers import get_gravatar_url
-from pretix.presale.signals import question_form_fields, front_page_bottom, process_response, html_head
+from pretix.presale.signals import (
+    question_form_fields, front_page_bottom, process_response, html_head
+)
 from pretix.control.signals import nav_event_settings
 from pretix.base.models import OrderPosition, QuestionAnswer
 from pretix.base.settings import settings_hierarkey
@@ -33,7 +35,9 @@ def add_public_registrations_html_head(sender, request=None, **kwargs):
 @receiver(question_form_fields, dispatch_uid="public_registration_question")
 def add_public_registration_question(sender, position, **kwargs):
     if str(position.item.pk) in sender.settings.get('public_registrations_items'):
-        public_questions = sender.questions.filter(pk__in=sender.settings.get('public_registrations_questions'))
+        public_questions = sender.questions.filter(
+            pk__in=sender.settings.get('public_registrations_questions')
+        )
         headers = (
             [_("Product")] if sender.settings.get('public_registrations_show_item_name') else []
         ) + (
@@ -55,12 +59,14 @@ def add_public_registration_question(sender, position, **kwargs):
 @receiver(signal=front_page_bottom, dispatch_uid="public_registrations_table")
 def add_public_registrations_table(sender, **kwargs):
     if not sender.settings.get('public_registrations_items') and not (
-        sender.settings.get('public_registrations_questions')
-        and sender.settings.get('public_registrations_show_item_name')
-        and sender.settings.get('public_registrations_show_attendee_name')
+            sender.settings.get('public_registrations_questions')
+            and sender.settings.get('public_registrations_show_item_name')
+            and sender.settings.get('public_registrations_show_attendee_name')
     ):
         return ""
-    public_questions = sender.questions.filter(pk__in=sender.settings.get('public_registrations_questions'))
+    public_questions = sender.questions.filter(
+        pk__in=sender.settings.get('public_registrations_questions')
+    )
     headers = (
         [_("Product")] if sender.settings.get('public_registrations_show_item_name') else []
     ) + (
@@ -68,12 +74,17 @@ def add_public_registrations_table(sender, **kwargs):
     ) + [
         q.question for q in public_questions
     ]
-    order_positions = OrderPosition.objects.filter(order__event=sender, item__pk__in=sender.settings.get('public_registrations_items'))
+    order_positions = OrderPosition.objects.filter(
+        order__event=sender,
+        item__pk__in=sender.settings.get('public_registrations_items')
+    )
     public_order_positions = [
         op for op in order_positions
         if op.meta_info_data.get('question_form_data', {}).get('public_registrations_public_registration')
     ]
-    answers = QuestionAnswer.objects.filter(orderposition__in=public_order_positions, question__in=public_questions)
+    answers = QuestionAnswer.objects.filter(
+        orderposition__in=public_order_positions, question__in=public_questions
+    )
     public_answers = {
         (a.orderposition_id, a.question_id): a
         for a in answers
