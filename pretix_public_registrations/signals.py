@@ -4,7 +4,6 @@ from django.template.loader import get_template
 from django.utils.translation import ugettext_lazy as _
 from django.urls import resolve, reverse
 from django_gravatar.helpers import get_gravatar_url
-from i18nfield.strings import LazyI18nString
 from pretix.presale.signals import question_form_fields, front_page_bottom, process_response, html_head
 from pretix.control.signals import nav_event_settings
 from pretix.base.models import OrderPosition, QuestionAnswer
