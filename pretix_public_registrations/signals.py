@@ -8,7 +8,7 @@ from pretix.presale.signals import (
     question_form_fields, front_page_bottom, process_response, html_head
 )
 from pretix.control.signals import nav_event_settings
-from pretix.base.models import OrderPosition, QuestionAnswer
+from pretix.base.models import Order, OrderPosition, QuestionAnswer
 from pretix.base.settings import settings_hierarkey
 
 
@@ -78,6 +78,8 @@ def add_public_registrations_table(sender, **kwargs):
         order__event=sender,
         item__pk__in=sender.settings.get('public_registrations_items'),
         order__testmode=(sender.testmode)
+    ).exclude(
+        order__status=Order.STATUS_CANCELED
     ).order_by('order__datetime')
     public_order_positions = [
         op for op in order_positions
