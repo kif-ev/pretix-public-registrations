@@ -76,7 +76,8 @@ def add_public_registrations_table(sender, **kwargs):
     ]
     order_positions = OrderPosition.objects.filter(
         order__event=sender,
-        item__pk__in=sender.settings.get('public_registrations_items')
+        item__pk__in=sender.settings.get('public_registrations_items'),
+        order__testmode=(sender.testmode)
     ).order_by('order__datetime')
     public_order_positions = [
         op for op in order_positions
