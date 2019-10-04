@@ -31,7 +31,7 @@ setup(
     url='git@gitlab.fachschaften.org:kifev/pretix-public-registrations.git',
     author='Felix Schäfer, Dominik Weitz',
     author_email='admin@kif.rocks',
-    license='Apache Software License',
+    license='MIT License',
 
     install_requires=['django-gravatar2'],
     packages=find_packages(exclude=['tests', 'tests.*']),
