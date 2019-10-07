@@ -4,6 +4,7 @@ from django.template.loader import get_template
 from django.utils.translation import ugettext_lazy as _
 from django.urls import resolve, reverse
 from django_gravatar.helpers import get_gravatar_url
+from pretix.base.signals import event_copy_data
 from pretix.presale.signals import (
     question_form_fields, front_page_bottom, process_response, html_head
 )
@@ -130,3 +131,21 @@ def navbar_settings(sender, request=None, **kwargs):
         }),
         'active': url.namespace == 'plugins:pretix_public_registrations' and url.url_name == 'settings',
     }]
+
+
+@receiver(signal=event_copy_data, dispatch_uid="public_registrations_event_copy_data")
+def event_copy_public_registrations_data(sender, other, item_map, question_map, **_):
+    sender.settings.set(
+        'public_registrations_items',
+        [
+            str(item_map[int(old_id)].pk)
+            for old_id in other.settings.get('public_registrations_items')
+        ]
+    )
+    sender.settings.set(
+        'public_registrations_questions',
+        [
+            str(question_map[int(old_id)].pk)
+            for old_id in other.settings.get('public_registrations_questions')
+        ]
+    )
