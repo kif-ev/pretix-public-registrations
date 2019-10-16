@@ -23,7 +23,7 @@
             <tr>
                 <th scope="row"><img class="gravatar" src="{{ pr.gr_url }}" /></th>
                 {% for f in pr.fields %}
-                <td>{{ f }}</td>
+                <td title="{{ f }}">{{ f|truncatechars:200 }}</td>
                 {% endfor %}
             </tr>
         {% endfor %}
