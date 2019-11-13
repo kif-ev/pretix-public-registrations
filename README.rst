@@ -1,5 +1,5 @@
 Pretix public registrations
-==========================
+===========================
 
 This is a plugin for `pretix`_. 
 
