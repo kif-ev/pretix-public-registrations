@@ -50,7 +50,8 @@ def add_public_registration_question(sender, position, **kwargs):
             label=_('Public registration'),
             required=False,
             help_text=_(
-                'The answers to the following questions will be publicly shown: %(qlist)s'
+                'A gravatar image based on a hash of your e-mail address as well as the answers to '
+                'the following questions will be publicly shown: %(qlist)s'
             ) % {'qlist': ", ".join(str(h) for h in headers)},
         )}
     else:

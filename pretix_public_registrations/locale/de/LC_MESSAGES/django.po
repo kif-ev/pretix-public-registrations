@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 19:55+0200\n"
+"POT-Creation-Date: 2020-02-23 17:37+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Felix Schäfer\n"
 "Language-Team: \n"
@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
@@ -42,25 +42,28 @@ msgstr "Teilnehmername anzeigen"
 msgid "Show product name"
 msgstr "Produktname anzeigen"
 
-#: signals.py:39 signals.py:66
+#: signals.py:43 signals.py:73
 msgid "Product"
 msgstr ""
 
-#: signals.py:41 signals.py:68
+#: signals.py:45 signals.py:75
 msgid "Name"
 msgstr ""
 
-#: signals.py:46
+#: signals.py:50
 msgid "Public registration"
 msgstr "Öffentliche Anmeldung"
 
-#: signals.py:49
+#: signals.py:53
 #, python-format
 msgid ""
-"The answers to the following questions will be publicly shown: %(qlist)s"
-msgstr "Antworten auf folgende Fragen werden öffentlich angezeigt: %(qlist)s"
+"A gravatar image based on a hash of your e-mail address as well as the "
+"answers to the following questions will be publicly shown: %(qlist)s"
+msgstr ""
+"Ein Gravatar-Bild basierend auf einem Hash deiner E-Mailadresse, sowie die "
+"Antworten auf folgende Fragen werden öffentlich angezeigt: %(qlist)s"
 
-#: signals.py:113 templates/pretix_public_registrations/front_page.html:3
+#: signals.py:128
 msgid "Public registrations"
 msgstr "Öffentliche Anmeldungen"
 
