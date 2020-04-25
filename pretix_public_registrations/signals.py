@@ -21,16 +21,15 @@ settings_hierarkey.add_default('public_registrations_show_item_name', False, boo
 
 @receiver(html_head, dispatch_uid="public_registrations_html_head")
 def add_public_registrations_html_head(sender, request=None, **kwargs):
-    cached = sender.cache.get('public_registrations_html_head')
-    if cached is None:
-        url = resolve(request.path_info)
-        if "event.index" in url.url_name:
-            template = get_template("pretix_public_registrations/head.html")
-            cached = template.render()
-        else:
-            cached = ""
+    url = resolve(request.path_info)
+    if "event.index" in url.url_name:
+        cached = sender.cache.get('public_registrations_html_head')
+        if cached is None:
+            cached = get_template("pretix_public_registrations/head.html").render()
         sender.cache.set('public_registrations_html_head', cached)
-    return cached
+        return cached
+    else:
+        return ""
 
 
 @receiver(question_form_fields, dispatch_uid="public_registration_question")
