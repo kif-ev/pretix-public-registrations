@@ -26,7 +26,7 @@ License
 -------
 
 
-Copyright 2019 Felix Schäfer, Dominik Weitz
+Copyright 2019-2020 Felix Schäfer, Dominik Weitz
 
 Released under the terms of the MIT License
 
