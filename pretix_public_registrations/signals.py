@@ -22,39 +22,36 @@ settings_hierarkey.add_default('public_registrations_show_item_name', False, boo
 @receiver(html_head, dispatch_uid="public_registrations_html_head")
 def add_public_registrations_html_head(sender, request=None, **kwargs):
     url = resolve(request.path_info)
-    if "event.index" in url.url_name:
-        cached = sender.cache.get('public_registrations_html_head')
-        if cached is None:
-            cached = get_template("pretix_public_registrations/head.html").render()
-        sender.cache.set('public_registrations_html_head', cached)
-        return cached
-    else:
-        return ""
+    if "event.index" not in url.url_name: return ""
+    cached = sender.cache.get('public_registrations_html_head')
+    if cached is None:
+        cached = get_template("pretix_public_registrations/head.html").render()
+    sender.cache.set('public_registrations_html_head', cached)
+    return cached
 
 
 @receiver(question_form_fields, dispatch_uid="public_registration_question")
 def add_public_registration_question(sender, position, **kwargs):
-    if str(position.item.pk) in sender.settings.get('public_registrations_items'):
-        public_questions = sender.questions.filter(
-            pk__in=sender.settings.get('public_registrations_questions')
-        )
-        headers = (
-            [_("Product")] if sender.settings.get('public_registrations_show_item_name') else []
-        ) + (
-            [_("Name")] if sender.settings.get('public_registrations_show_attendee_name') else []
-        ) + [
-            q.question for q in public_questions
-        ]
-        return {'public_registrations_public_registration': forms.BooleanField(
-            label=_('Public registration'),
-            required=False,
-            help_text=_(
-                'A gravatar image based on a hash of your e-mail address as well as the answers to '
-                'the following questions will be publicly shown: %(qlist)s'
-            ) % {'qlist': ", ".join(str(h) for h in headers)},
-        )}
-    else:
+    if str(position.item.pk) not in sender.settings.get('public_registrations_items'):
         return {}
+    public_questions = sender.questions.filter(
+        pk__in=sender.settings.get('public_registrations_questions')
+    )
+    headers = (
+        [_("Product")] if sender.settings.get('public_registrations_show_item_name') else []
+    ) + (
+        [_("Name")] if sender.settings.get('public_registrations_show_attendee_name') else []
+    ) + [
+        q.question for q in public_questions
+    ]
+    return {'public_registrations_public_registration': forms.BooleanField(
+        label=_('Public registration'),
+        required=False,
+        help_text=_(
+            'A gravatar image based on a hash of your e-mail address as well as the answers to '
+            'the following questions will be publicly shown: %(qlist)s'
+        ) % {'qlist': ", ".join(str(h) for h in headers)},
+    )}
 
 
 @receiver(signal=front_page_bottom, dispatch_uid="public_registrations_table")
