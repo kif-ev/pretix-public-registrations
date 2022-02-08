@@ -1,7 +1,7 @@
 from django import forms
 from django.dispatch import receiver
 from django.template.loader import get_template
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.urls import resolve, reverse
 from django_gravatar.helpers import get_gravatar_url
 from pretix.base.signals import event_copy_data
