@@ -1,0 +1,42 @@
+---
+stages:
+  - linting
+# Change pip's cache directory to be inside the project directory since we can
+# only cache local items.
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+cache:
+  paths:
+    - .cache
+
+docformatter:
+  stage: linting
+  image: python:3
+  before_script:
+    - pip3 install -U pip docformatter
+  script:
+    - docformatter --check -r .
+
+black:
+  stage: linting
+  image: python:3
+  before_script:
+    - pip3 install -U pip black
+  script:
+    - black --check .
+
+isort:
+  stage: linting
+  image: python:3
+  before_script:
+    - pip3 install -U pip isort
+  script:
+    - isort -c .
+
+flake8:
+  stage: linting
+  image: python:3
+  before_script:
+    - pip3 install -U pip flake8
+  script:
+    - flake8 .
