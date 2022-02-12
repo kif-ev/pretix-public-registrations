@@ -4,6 +4,8 @@ try:
 except ImportError:
     raise RuntimeError("Please use pretix 2.7 or above to run this plugin!")
 
+__version__ = "1.4.0"
+
 
 class PluginApp(PluginConfig):
     name = 'pretix_public_registrations'
@@ -14,7 +16,8 @@ class PluginApp(PluginConfig):
         author = 'Felix Schäfer, Dominik Weitz'
         description = _('This plugin will give the option to attendees of an event to mark their registration as public. Public registrations will be shown along their answers to questions marked as public by the organizers on a world-readable page.')
         visible = True
-        version = '1.4.0'
+        version = __version__
+        category = "FEATURE"
         compatibility = "pretix>=2.7.0"
 
     def ready(self):

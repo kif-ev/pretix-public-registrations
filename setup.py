@@ -1,16 +1,15 @@
-# -*- coding: utf-8 -*-
-
 import os
 from distutils.command.build import build
 
 from django.core import management
 from setuptools import setup, find_packages
 
+from pretix_public_registrations import __version__
 
 try:
     with open(os.path.join(os.path.dirname(__file__), 'README.rst'), encoding='utf-8') as f:
         long_description = f.read()
-except:
+except Exception:
     long_description = ''
 
 
@@ -27,7 +26,7 @@ cmdclass = {
 
 setup(
     name='pretix-public-registrations',
-    version='1.4.0',
+    version=__version__,
     description='This plugin will give the option to attendees of an event to mark their registration as public. Public registrations will be shown along their answers to questions marked as public by the organizers on a world-readable page.',
     long_description=long_description,
     keywords="pretix public registrations",
@@ -38,7 +37,7 @@ setup(
     },
     author='Felix Schäfer, Dominik Weitz',
     author_email='admin@kif.rocks',
-    license='MIT License',
+    license='MIT',
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Plugins",
