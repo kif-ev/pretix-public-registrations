@@ -8,7 +8,7 @@
         {% csrf_token %}
         {% bootstrap_form_errors form %}
         <fieldset>
-            <fieldset>{% trans "Display" %}</fieldset>
+            <legend>{% trans "Display" %}</legend>
             {% bootstrap_form form layout="horizontal" %}
         </fieldset>
         <div class="form-group submit-group">
