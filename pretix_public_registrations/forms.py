@@ -8,7 +8,7 @@ class PublicRegistrationsSettingsForm(SettingsForm):
         widget=forms.CheckboxSelectMultiple(
             attrs={"class": "scrolling-multiple-choice"}
         ),
-        label=_("Show public registrations for"),
+        label=_("Display public registrations for"),
         required=True,
         choices=[],
     )
@@ -16,16 +16,16 @@ class PublicRegistrationsSettingsForm(SettingsForm):
         widget=forms.CheckboxSelectMultiple(
             attrs={"class": "scrolling-multiple-choice"}
         ),
-        label=_("Publicly show answers for"),
+        label=_("Publicly display answers for"),
         required=True,
         choices=[],
     )
     public_registrations_show_attendee_name = forms.BooleanField(
-        label=_("Show attendee name"),
+        label=_("Display attendee name"),
         required=False,
     )
     public_registrations_show_item_name = forms.BooleanField(
-        label=_("Show product name"),
+        label=_("Display product name"),
         required=False,
     )
 
