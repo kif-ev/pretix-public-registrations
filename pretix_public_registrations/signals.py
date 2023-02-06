@@ -148,7 +148,7 @@ def add_public_registrations_csp_headers(sender, request=None, response=None, **
 
 
 @receiver(signal=nav_event_settings, dispatch_uid="public_registrations_nav_settings")
-def navbar_settings(sender, request=None, **kwargs):
+def navbar_settings(sender, request, **kwargs):
     url = resolve(request.path_info)
     return [
         {

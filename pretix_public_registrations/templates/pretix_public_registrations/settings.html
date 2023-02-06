@@ -3,11 +3,12 @@
 {% load bootstrap3 %}
 {% block title %} {% trans "Public registrations settings" %} {% endblock %}
 {% block inside %}
-    <h1>{% trans "Public registrations settings" %}</h1>
+    <h1>{% trans "Public registrations" %}</h1>
     <form action="" method="post" class="form-horizontal">
         {% csrf_token %}
         {% bootstrap_form_errors form %}
         <fieldset>
+            <fieldset>{% trans "Display" %}</fieldset>
             {% bootstrap_form form layout="horizontal" %}
         </fieldset>
         <div class="form-group submit-group">
