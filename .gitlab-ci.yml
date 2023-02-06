@@ -9,14 +9,6 @@ cache:
   paths:
     - .cache
 
-docformatter:
-  stage: linting
-  image: python:3
-  before_script:
-    - pip3 install -U pip docformatter
-  script:
-    - docformatter --check -r .
-
 black:
   stage: linting
   image: python:3
@@ -40,3 +32,11 @@ flake8:
     - pip3 install -U pip flake8
   script:
     - flake8 .
+
+check-manifest:
+  stage: linting
+  image: python:3
+  before_script:
+    - pip3 install -U pip check-manifest
+  script:
+    - check-manifest .

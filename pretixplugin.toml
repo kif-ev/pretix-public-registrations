@@ -1,0 +1,5 @@
+[plugin]
+package = "pretix-public-registrations"
+modules = [ "pretix_public_registrations" ]
+marketplace_name = "public-registrations"
+

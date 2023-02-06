@@ -2,9 +2,10 @@ import os
 from distutils.command.build import build
 
 from django.core import management
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 from pretix_public_registrations import __version__
+
 
 try:
     with open(
