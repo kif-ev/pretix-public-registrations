@@ -26,11 +26,10 @@ def add_public_registrations_html_head(sender, request=None, **kwargs):
     url = resolve(request.path_info)
     if "event.index" not in url.url_name:
         return ""
-    cached = sender.cache.get("public_registrations_html_head")
-    if cached is None:
-        cached = get_template("pretix_public_registrations/head.html").render()
-    sender.cache.set("public_registrations_html_head", cached)
-    return cached
+    return sender.cache.get_or_set(
+        "public_registrations_html_head",
+        get_template("pretix_public_registrations/head.html").render(),
+    )
 
 
 @receiver(question_form_fields, dispatch_uid="public_registration_question")
