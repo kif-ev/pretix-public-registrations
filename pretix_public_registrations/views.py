@@ -1,11 +1,11 @@
 from django.urls import reverse
 from pretix.control.views.event import EventSettingsFormView, EventSettingsViewMixin
 
-from .forms import PublicRegistrationsForm
+from .forms import PublicRegistrationsSettingsForm
 
 
-class PublicParticipationsView(EventSettingsViewMixin, EventSettingsFormView):
-    form_class = PublicRegistrationsForm
+class PublicRegistrationsSettingsView(EventSettingsViewMixin, EventSettingsFormView):
+    form_class = PublicRegistrationsSettingsForm
     template_name = "pretix_public_registrations/settings.html"
 
     def get_success_url(self, **kwargs):

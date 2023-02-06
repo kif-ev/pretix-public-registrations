@@ -1,11 +1,11 @@
 from django.conf.urls import url
 
-from .views import PublicParticipationsView
+from .views import PublicRegistrationsSettingsView
 
 urlpatterns = [
     url(
-        r"^control/event/(?P<organizer>[^/]+)/(?P<event>[^/]+)/public_participations/$",
-        PublicParticipationsView.as_view(),
+        r"^control/event/(?P<organizer>[^/]+)/(?P<event>[^/]+)/public_registrations/$",
+        PublicRegistrationsSettingsView.as_view(),
         name="settings",
     )
 ]

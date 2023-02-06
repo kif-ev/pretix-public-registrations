@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from pretix.base.forms import SettingsForm
 
 
-class PublicRegistrationsForm(SettingsForm):
+class PublicRegistrationsSettingsForm(SettingsForm):
     public_registrations_items = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(
             attrs={"class": "scrolling-multiple-choice"}
