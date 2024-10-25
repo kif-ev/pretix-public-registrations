@@ -130,9 +130,11 @@ def add_public_registrations_table(sender, **kwargs):
                 else []
             )
             + [
-                public_answers[(pop.pk, pq.pk)].answer
-                if public_answers.get((pop.pk, pq.pk))
-                else ""
+                (
+                    public_answers[(pop.pk, pq.pk)].answer
+                    if public_answers.get((pop.pk, pq.pk))
+                    else ""
+                )
                 for pq in public_questions
             ],
         }
