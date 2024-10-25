@@ -1,9 +1,9 @@
+import hashlib
 from django import forms
 from django.dispatch import receiver
 from django.template.loader import get_template
 from django.urls import resolve, reverse
 from django.utils.translation import gettext_lazy as _
-from django_gravatar.helpers import get_gravatar_url
 from pretix.base.models import Order, OrderPosition, QuestionAnswer
 from pretix.base.settings import settings_hierarkey
 from pretix.base.signals import event_copy_data
@@ -14,6 +14,7 @@ from pretix.presale.signals import (
     process_response,
     question_form_fields,
 )
+from urllib.parse import urlencode
 
 settings_hierarkey.add_default("public_registrations_items", [], list)
 settings_hierarkey.add_default("public_registrations_questions", [], list)
@@ -67,6 +68,12 @@ def add_public_registration_question(sender, position, **kwargs):
 
 @receiver(signal=front_page_bottom, dispatch_uid="public_registrations_table")
 def add_public_registrations_table(sender, **kwargs):
+    def get_gravatar_url(email, size=40):
+        email_encoded = email.lower().encode("utf-8")
+        email_hash = hashlib.sha256(email_encoded).hexdigest()
+        params = urlencode({"d": "wavatar", "s": str(size), "r": "g"})
+        return f"https://gravatar.com/avatar/{email_hash}?{params}"
+
     if not sender.settings.get("public_registrations_items") and not (
         sender.settings.get("public_registrations_questions")
         and sender.settings.get("public_registrations_show_item_name")
@@ -111,9 +118,7 @@ def add_public_registrations_table(sender, **kwargs):
     public_answers = {(a.orderposition_id, a.question_id): a for a in answers}
     public_registrations = [
         {
-            "gr_url": get_gravatar_url(
-                pop.attendee_email or pop.order.code, size=24, default="wavatar"
-            ),
+            "gr_url": get_gravatar_url(pop.attendee_email or pop.order.code, size=24),
             "fields": (
                 [pop.item.name]
                 if sender.settings.get("public_registrations_show_item_name")
@@ -142,7 +147,7 @@ def add_public_registrations_table(sender, **kwargs):
 @receiver(signal=process_response, dispatch_uid="public_registragions_csp_headers")
 def add_public_registrations_csp_headers(sender, request=None, response=None, **kwargs):
     if "event.index" in resolve(request.path_info).url_name:
-        response["Content-Security-Policy"] = "img-src https://secure.gravatar.com"
+        response["Content-Security-Policy"] = "img-src https://gravatar.com"
     return response
 
 
