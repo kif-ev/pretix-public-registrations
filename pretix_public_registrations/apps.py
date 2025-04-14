@@ -24,6 +24,13 @@ class PluginApp(PluginConfig):
         version = __version__
         category = "FEATURE"
         compatibility = "pretix>=2.7.0"
+        settings_links = [
+            (
+                gettext_lazy("Public registrations"),
+                "plugins:pretix_public_reginstrations:settings",
+                {},
+            ),
+        ]
 
     def ready(self):
         from . import signals  # NOQA
