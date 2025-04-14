@@ -27,7 +27,7 @@ class PluginApp(PluginConfig):
         settings_links = [
             (
                 gettext_lazy("Public registrations"),
-                "plugins:pretix_public_reginstrations:settings",
+                "plugins:pretix_public_registrations:settings",
                 {},
             ),
         ]
