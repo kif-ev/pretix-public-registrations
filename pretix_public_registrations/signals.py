@@ -131,7 +131,7 @@ def add_public_registrations_table(sender, **kwargs):
             )
             + [
                 (
-                    public_answers[(pop.pk, pq.pk)].answer
+                    public_answers[(pop.pk, pq.pk)].to_string_i18n
                     if public_answers.get((pop.pk, pq.pk))
                     else ""
                 )
